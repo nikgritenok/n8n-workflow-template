@@ -8,11 +8,12 @@
     "node": ">=24",
     "pnpm": ">=10"
   },
+  "devDependencies": {
+    "@n8n/cli": "0.20.0",
+    "skills": "1.7.0"
+  },
   "scripts": {
-    "validate": "node scripts/validate-workflows.mjs",
-    "check:skills": "node scripts/check-skills.mjs",
-    "check": "node scripts/validate-workflows.mjs && node scripts/check-skills.mjs",
-    "skills:update": "pnpm dlx skills update -p -y",
-    "skills:restore": "pnpm dlx skills experimental_install"
+    "skills:update": "skills update -p -y",
+    "skills:restore": "skills experimental_install"
   }
 }

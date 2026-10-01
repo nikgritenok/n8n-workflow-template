@@ -13,15 +13,18 @@
 
 ## Инструменты (pnpm — единственный менеджер пакетов)
 
+Тулчейн зафиксирован в `devDependencies` + `pnpm-lock.yaml`, CI ставит через
+`pnpm install --frozen-lockfile`. После клонирования: `pnpm install`.
+
 - **Node 24+, pnpm 10+** — версии фиксируют `packageManager` и `.nvmrc`.
-- **skills CLI** (`pnpm dlx skills`, пакет [`skills`](https://www.npmjs.com/package/skills)) — установка и обновление скиллов:
-  - `pnpm dlx skills list` — что установлено в проекте;
-  - `pnpm dlx skills update -p -y` — обновить проектные скиллы до свежих версий (обновляет и `skills-lock.json`, и `.agents/skills/`);
-  - `pnpm dlx skills experimental_install` — восстановить скиллы из `skills-lock.json` (если папки не закоммичены или разошлись);
-  - `pnpm dlx skills add <пакет>` — добавить новый пакет скиллов.
-- **n8n CLI** ([`@n8n/cli`](https://www.npmjs.com/package/@n8n/cli), глобально: `pnpm add -g @n8n/cli`) — работа с инстансом из терминала. Бинарь называется `n8n-cli`, подключение — `n8n-cli login`. Глобальная установка в проект не коммитится.
+- **skills CLI** (пакет [`skills`](https://www.npmjs.com/package/skills), `1.7.0`) — установка и обновление скиллов:
+  - `pnpm exec skills list` — что установлено в проекте;
+  - `pnpm run skills:update` — обновить проектные скиллы до свежих версий (обновляет и `skills-lock.json`, и `.agents/skills/`);
+  - `pnpm run skills:restore` — восстановить скиллы из `skills-lock.json` (если папки не закоммичены или разошлись);
+  - `pnpm exec skills add <пакет>` — добавить новый пакет скиллов.
+- **n8n CLI** (пакет [`@n8n/cli`](https://www.npmjs.com/package/@n8n/cli), `0.20.0` в `devDependencies`, бинарь — `n8n-cli`, подключение — `pnpm exec n8n-cli login`) — работа с инстансом из терминала.
 - **mermaid-cli** — схемы процессов.
-- Локальные проверки: `pnpm run check` (`validate` + `check:skills`). CI гоняет то же самое, зависимостей нет — `install` не нужен.
+- Локальная проверка тулчейна: `pnpm install --frozen-lockfile && pnpm exec skills --version && pnpm exec n8n-cli --version`.
 
 ## MCP-серверы (проектные, `.omp/mcp.json`)
 
@@ -33,5 +36,9 @@
 ## Ограничения
 
 - Ответы LLM при нехватке данных — вопросы, а не выдуманные факты.
-- Скиллы в `.agents/skills/`: состав задаёт `skills-lock.json` (сверяется `pnpm run check:skills`; обновление — только через `skills update`, руками папки не править). При работе с нодами, выражениями, JSON workflow или логикой агентов — сверяться с `using-n8n-skills-official`.
-- Экспорты workflow — JSON в `workflows/`; секреты только через credentials n8n, никогда текстом в параметрах (ловится `pnpm validate`).
+- Скиллы в `.agents/skills/`: состав задаёт `skills-lock.json`; обновление — только через `skills update`, руками папки не править. При работе с нодами, выражениями, JSON workflow или логикой агентов — сверяться с `using-n8n-skills-official`.
+- Workflows — JSON в `workflows/`; секреты только через credentials n8n, никогда текстом в параметрах.
+
+## CODE STYLE
+
+- Do not add unnecessary comments

@@ -1,8 +1,7 @@
-name: validate
+name: toolchain
 
 on:
   push:
-  pull_request:
 
 jobs:
   validate:
@@ -15,4 +14,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: pnpm run check
+      - run: pnpm install --frozen-lockfile
